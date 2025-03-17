@@ -1,71 +1,166 @@
-###################
-What is CodeIgniter
-###################
+📌 Fundamental CRUD CodeIgniter 3
+Proyek ini adalah implementasi CRUD (Create, Read, Update, Delete) menggunakan CodeIgniter 3. Proyek ini membantu memahami dasar-dasar CodeIgniter, termasuk instalasi, koneksi database, dan manipulasi data melalui model, controller, dan view.
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+🎯 Tujuan Pembelajaran
+Setelah mempelajari modul ini, diharapkan siswa dapat:
+✅ Menginstalasi CodeIgniter 3 dengan benar.
+✅ Menyiapkan proyek CodeIgniter 3 dan mengintegrasikan dengan Bootstrap.
+✅ Menampilkan data dari database menggunakan CodeIgniter.
+✅ Melakukan input, pengeditan, dan penghapusan data di database menggunakan CodeIgniter.
 
-*******************
-Release Information
-*******************
+🚀 Fitur CRUD
+✔ Menampilkan data siswa dari database
+✔ Menambahkan siswa baru
+✔ Mengedit data siswa
+✔ Menghapus data siswa
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+🔧 Instalasi CodeIgniter 3
+1️⃣ Persiapan
+Pastikan XAMPP atau web server lain sudah terinstal.
+Unduh CodeIgniter 3 dari: CodeIgniter Download.
+2️⃣ Instalasi & Konfigurasi
+Ekstrak CodeIgniter ke dalam htdocs.
+Ubah nama folder proyek, misalnya: ci-bootstrap.
+Atur Base URL di application/config/config.php:
+php
+Salin
+Edit
+$config['base_url'] = 'http://localhost/ci-bootstrap/';
+3️⃣ Menghubungkan dengan Database
+Buat database di phpMyAdmin dengan nama ci_db.
+Atur koneksi database di application/config/database.php:
+php
+Salin
+Edit
+$db['default'] = [
+    'hostname' => 'localhost',
+    'username' => 'root',
+    'password' => '',
+    'database' => 'ci_db',
+    'dbdriver' => 'mysqli'
+];
+📂 Menampilkan Data dari Database
+1️⃣ Membuat Database & Tabel
+Buka phpMyAdmin, jalankan SQL berikut:
 
-**************************
-Changelog and New Features
-**************************
+sql
+Salin
+Edit
+CREATE TABLE siswa (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100) NOT NULL,
+    alamat TEXT NOT NULL,
+    no_hp VARCHAR(15) NOT NULL
+);
+2️⃣ Membuat Model (Siswa_model.php)
+php
+Salin
+Edit
+class Siswa_model extends CI_Model {
+    public function get_all_siswa() {
+        return $this->db->get('siswa')->result();
+    }
+}
+3️⃣ Membuat Controller (Siswa.php)
+php
+Salin
+Edit
+class Siswa extends CI_Controller {
+    public function index() {
+        $this->load->model('Siswa_model');
+        $data['siswa'] = $this->Siswa_model->get_all_siswa();
+        $this->load->view('siswa_view', $data);
+    }
+}
+4️⃣ Membuat Tampilan (siswa_view.php)
+php
+Salin
+Edit
+<table class="table table-bordered">
+    <tr>
+        <th>Nama</th>
+        <th>Alamat</th>
+        <th>No HP</th>
+    </tr>
+    <?php foreach ($siswa as $row) : ?>
+    <tr>
+        <td><?= $row->nama; ?></td>
+        <td><?= $row->alamat; ?></td>
+        <td><?= $row->no_hp; ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+📝 10 Soal Esai & Jawaban
+Berikut adalah 10 pertanyaan esai untuk menguji pemahaman tentang CRUD di CodeIgniter 3.
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+1️⃣ Jelaskan langkah-langkah instalasi CodeIgniter 3 di komputer lokal menggunakan XAMPP!
+✅ Jawaban:
 
-*******************
-Server Requirements
-*******************
+Unduh CodeIgniter 3 dari situs resminya.
+Ekstrak file ke dalam folder htdocs di XAMPP.
+Atur Base URL di config.php.
+Konfigurasi database di database.php.
+Jalankan XAMPP, lalu akses di browser:
+arduino
+Salin
+Edit
+http://localhost/ci-bootstrap/
+2️⃣ Mengapa kita perlu mengatur config.php?
+✅ Jawaban:
 
-PHP version 5.6 or newer is recommended.
+Untuk mengatur base_url, agar aplikasi berjalan dengan benar.
+Mengatur session, keamanan, dan konfigurasi dasar lainnya.
+3️⃣ Bagaimana cara menghubungkan CodeIgniter 3 dengan database MySQL?
+✅ Jawaban:
 
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
+Buat database di phpMyAdmin.
+Edit application/config/database.php dan atur koneksi database.
+4️⃣ Peran file Siswa_model.php dalam aplikasi CodeIgniter?
+✅ Jawaban:
 
-************
-Installation
-************
+Sebagai model yang menangani pengambilan, penambahan, pengeditan, dan penghapusan data siswa di database.
+5️⃣ Cara menampilkan data dari database di CodeIgniter?
+✅ Jawaban:
 
-Please see the `installation section <https://codeigniter.com/userguide3/installation/index.html>`_
-of the CodeIgniter User Guide.
+Model mengambil data dari database.
+Controller mengirim data ke View.
+View menampilkan data dalam tabel HTML.
+6️⃣ Bagaimana proses input data ke database dilakukan?
+✅ Jawaban:
 
-*******
-License
-*******
+Pengguna mengisi form, lalu mengklik tombol Simpan.
+Data dikirim ke Controller, lalu ke Model untuk disimpan ke database.
+Setelah berhasil, pengguna diarahkan kembali ke halaman daftar siswa.
+7️⃣ Bagaimana cara mengedit data di database menggunakan CodeIgniter?
+✅ Jawaban:
 
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
+Pengguna klik Edit pada data yang ingin diubah.
+Form tampil dengan data lama.
+Setelah diedit, data dikirim ke Controller, lalu diperbarui di database.
+8️⃣ Fungsi dari delete_siswa() dalam Siswa_model.php?
+✅ Jawaban:
 
-*********
-Resources
-*********
+Fungsi ini digunakan untuk menghapus data siswa berdasarkan ID yang diberikan.
+Contoh kode:
+php
+Salin
+Edit
+public function delete_siswa($id) {
+    return $this->db->where('id', $id)->delete('siswa');
+}
+9️⃣ Cara menampilkan tombol Edit & Hapus di siswa_view.php dengan Bootstrap?
+✅ Jawaban:
 
--  `User Guide <https://codeigniter.com/docs>`_
--  `Contributing Guide <https://github.com/bcit-ci/CodeIgniter/blob/develop/contributing.md>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community Slack Channel <https://codeigniterchat.slack.com>`_
+Gunakan tombol Bootstrap dalam tabel:
+php
+Salin
+Edit
+<td>
+    <a href="<?= site_url('siswa/edit/'.$row->id); ?>" class="btn btn-warning">Edit</a>
+    <a href="<?= site_url('siswa/hapus/'.$row->id); ?>" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus?');">Hapus</a>
+</td>
+🔟 Mengapa penting mengintegrasikan Bootstrap dengan CodeIgniter?
+✅ Jawaban:
 
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
-
-***************
-Acknowledgement
-***************
-
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
+Mempercantik tampilan dan membuatnya responsif.
+Membantu membuat antarmuka lebih profesional tanpa banyak menulis kode CSS.
